@@ -1,0 +1,81 @@
+<div class="memory-page">
+    <!-- Envelope Section -->
+    <div class="header">
+      <div class="envelope-container">
+        <p class="open-text">Open Envelope</p>
+        <div class="envelope-wrapper" (click)="toggleEnvelope()">
+          <i class="fas fa-envelope envelope" [class.fa-envelope-open]="envelopeOpen"></i>
+          <div class="message" *ngIf="envelopeOpen">
+            <p>💌 You mean the world to me. Forever yours. 💖</p>
+          </div>
+        </div>
+      </div>
+      <h1>Message Unfolding</h1>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Photo Gallery -->
+      <div class="left-panel">
+        <h2>Our Memories</h2>
+        <input type="file" id="fileInput" accept="image/*" (change)="onFileSelected($event)" style="display: none;">
+        <button class="upload-button" (click)="uploadPhoto()">Upload New Photo</button>
+  
+        <div class="photo-wall">
+          <div class="photo-hanger" *ngFor="let photo of photos; let i = index">
+            <div class="photo-controls">
+              <button class="delete-btn" (click)="deletePhoto(i)">×</button>
+            </div>
+            <div class="string"></div>
+            <div class="clip"></div>
+            <div class="photo-frame">
+              <img [src]="photo" alt="Memory" />
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Countdowns -->
+      <!-- Replace right-panel section with this: -->
+<div class="right-panel">
+    <div class="countdown-box ages">
+      <h3>Our Ages</h3>
+      <div class="age-display">
+        <div class="age-item">
+          <span class="age-label">Me:</span>
+          <span class="age-number">{{ myAge }}</span>
+        </div>
+        <div class="age-item">
+          <span class="age-label">Him:</span>
+          <span class="age-number">{{ hisAge }}</span>
+        </div>
+      </div>
+    </div>
+  
+    <div class="countdown-box together">
+      <h3>Together Since</h3>
+      <p class="big-number">July 18, 2024</p>
+      <p class="days-together">{{ daysTogether }} Days</p>
+    </div>
+  
+    <div class="bible-verse">
+      {{ currentVerse }}
+    </div>
+  </div>
+  
+    <!-- Music Player -->
+    <div class="music-player">
+      <p>Love Song</p>
+      <div class="controls">
+        <input type="range" [(ngModel)]="musicProgress" (input)="seekMusic()" />
+        <button (click)="prevSong()">&lt;</button>
+        <button class="play-button" (click)="togglePlay()">{{ isPlaying ? '❚❚' : '▶' }}</button>
+        <button (click)="nextSong()">&gt;</button>
+      </div>
+    </div>
+  
+    <!-- Floating Hearts -->
+    <div class="hearts-container">
+      <div *ngFor="let h of hearts" class="heart" [style.left.%]="h.left" [style.animationDelay.s]="h.delay"></div>
+    </div>
+</div>
