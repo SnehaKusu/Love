@@ -1,3 +1,4 @@
+
 import { Component, OnInit } from '@angular/core';
 import confetti from 'canvas-confetti';
 import { CommonModule } from '@angular/common';
@@ -11,13 +12,15 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./memory-page.component.scss']
 })
 export class MemoryPageComponent implements OnInit {
+  showBirthday = true;
+
   // Photo Gallery
   photos: string[] = [];
   
   // Personal Dates
   myBirthday = new Date(2000, 4, 22); // May 22 2000 (months are 0-indexed)
   hisBirthday = new Date(1998, 4, 18); // May 18 1998
-  loveStartDate = new Date(2023, 6, 18); // July 18 2023
+  loveStartDate = new Date(2024, 6, 18); // July 18 2024
 
   // Calculated Values
   myAge = this.calculateAge(this.myBirthday);
@@ -28,7 +31,7 @@ export class MemoryPageComponent implements OnInit {
   envelopeOpen = false;
   
   // Music Player
-  isPlaying = false;
+  isPlaying = true;
   musicProgress = 0;
   currentSong = 0;
   songs = [
@@ -55,11 +58,44 @@ export class MemoryPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadPhotos();
-    this.launchConfetti();
+    this.playIntro();
     setInterval(() => this.launchConfetti(), 8000);
     setInterval(() => this.updateMusicProgress(), 1000);
     setInterval(() => this.rotateBibleVerse(), 15000);
+    
   }
+  playIntro() {
+    setTimeout(() => {
+      this.launchConfetti();
+    }, 500);
+    setTimeout(() => {
+      this.showBirthday = false;
+      this.autoPlayBackgroundMusic();
+    }, 3000); // hides after 3 seconds
+  }
+  getLoveDuration(): string {
+    const start = this.loveStartDate;
+    const now = new Date();
+
+    let years = now.getFullYear() - start.getFullYear();
+    let months = now.getMonth() - start.getMonth();
+    let days = now.getDate() - start.getDate();
+
+    if (days < 0) {
+      months--;
+      const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+      days += prevMonth.getDate();
+    }
+
+    if (months < 0) {
+      years--;
+      months += 12;
+    }
+
+    return `${years} year${years !== 1 ? 's' : ''}, ${months} month${months !== 1 ? 's' : ''}, and ${days} day${days !== 1 ? 's' : ''}`;
+
+  }
+  
 
   // Photo Gallery Functions
   private loadPhotos() {
@@ -118,25 +154,51 @@ export class MemoryPageComponent implements OnInit {
 
   calculateDaysTogether(): number {
     const today = new Date();
-    const diffTime = Math.abs(today.getTime() - this.loveStartDate.getTime());
+    const diffTime = today.getTime() - this.loveStartDate.getTime();
     return Math.floor(diffTime / (1000 * 60 * 60 * 24));
   }
- // Bible Verses for background
- bibleVersePattern = [
-  "1 Cor. 13:4",
-  "Eccl. 4:9",
-  "Song 3:4",
-  "1 Cor. 16:14",
-  "1 Cor. 13:8"
-];
-getBackgroundStyle() {
-  const verse = this.bibleVersePattern[Math.floor(Math.random() * this.bibleVersePattern.length)];
-  return {
-    'background-image': `url("data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='20' y='30' font-family='Arial' font-size='12' fill='%23b8325c' fill-opacity='0.08' transform='rotate(15 100,100)'%3E${verse}%3C/text%3E%3C/svg%3E")`,
-    'background-repeat': 'repeat'
-  };
+
+  // Birthday Popup
+  wishHappyBirthday() {
+    setTimeout(() => {
+      alert('🎉 Happy Birthday, Love! 🎂');
+      confetti({ particleCount: 150, spread: 100, origin: { y: 0.6 } });
+    }, 500);
+  }
+
+  // Background Music Autoplay
+  audio: HTMLAudioElement | null = null;
+
+autoPlayBackgroundMusic() {
+  this.audio = new Audio('assets/music/song.mp3');
+  this.audio.loop = true;
+  this.audio.volume = 0.4;
+
+  // Play after 3-second delay (post-birthday overlay)
+  setTimeout(() => {
+    this.audio?.play().catch(() => {
+      console.warn("Autoplay blocked, trying again...");
+      setTimeout(() => this.audio?.play(), 1000);
+    });
+  }, 3000);
 }
 
+
+  // Bible Verses for background
+  bibleVersePattern = [
+    "1 Cor. 13:4",
+    "Eccl. 4:9",
+    "Song 3:4",
+    "1 Cor. 16:14",
+    "1 Cor. 13:8"
+  ];
+  getBackgroundStyle() {
+    const verse = this.bibleVersePattern[Math.floor(Math.random() * this.bibleVersePattern.length)];
+    return {
+      'background-image': `url("data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='20' y='30' font-family='Arial' font-size='12' fill='%23b8325c' fill-opacity='0.08' transform='rotate(15 100,100)'%3E${verse}%3C/text%3E%3C/svg%3E")`,
+      'background-repeat': 'repeat'
+    };
+  }
 
   // Bible Verse Functions
   rotateBibleVerse() {
@@ -169,7 +231,6 @@ getBackgroundStyle() {
   }
 
   seekMusic() {
-    // In a real app, this would seek the audio player
     console.log('Seeking to:', this.musicProgress);
   }
 

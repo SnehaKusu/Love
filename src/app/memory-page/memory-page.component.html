@@ -12,7 +12,10 @@
       </div>
       <h1>Message Unfolding</h1>
     </div>
-
+    <div *ngIf="showBirthday" class="birthday-overlay">
+      <h1 class="birthday-text">🎉 Happy Birthday, Love! 🎂</h1>
+    </div>
+    
     <!-- Main Content -->
     <div class="main-content">
       <!-- Photo Gallery -->
@@ -52,11 +55,12 @@
       </div>
     </div>
   
-    <div class="countdown-box together">
-      <h3>Together Since</h3>
-      <p class="big-number">July 18, 2024</p>
-      <p class="days-together">{{ daysTogether }} Days</p>
+    <div class="countdown-box together-card">
+      <h3>Our Love Began</h3>
+      <div class="big-number">{{ getLoveDuration() }}</div>
+      <p class="days-together">Since July 18th, 2024 💑</p>
     </div>
+    
   
     <div class="bible-verse">
       {{ currentVerse }}
