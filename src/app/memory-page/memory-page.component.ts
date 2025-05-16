@@ -58,6 +58,7 @@ export class MemoryPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadPhotos();
+      console.log('Loaded photos:', this.photos);
     this.playIntro();
     setInterval(() => this.launchConfetti(), 8000);
     setInterval(() => this.updateMusicProgress(), 1000);
@@ -101,9 +102,24 @@ export class MemoryPageComponent implements OnInit {
   private loadPhotos() {
     const savedPhotos = localStorage.getItem('memoryPhotos');
     this.photos = savedPhotos ? JSON.parse(savedPhotos) : [
-      'https://cdn.pixabay.com/photo/2020/08/04/15/01/couple-5463731_1280.jpg',
-      'https://cdn.pixabay.com/photo/2016/03/09/09/30/couple-1246244_1280.jpg',
-      'https://cdn.pixabay.com/photo/2017/08/01/08/29/people-2563491_1280.jpg'
+      'assets/images/image1.jpg',
+      'assets/images/image2.jpg',
+      'assets/images/image3.jpg',
+      'assets/images/image4.jpg',
+      'assets/images/image5.jpg',
+      'assets/images/image6.jpg',
+      'assets/images/image7.jpg',
+      'assets/images/image8.jpg',
+      'assets/images/image9.jpg',
+      'assets/images/image10.jpg',
+      'assets/images/image11.jpg',
+      'assets/images/image12.jpg',
+      'assets/images/image13.jpg',
+      'assets/images/image14.jpg',
+      'assets/images/image15.jpg',
+      'assets/images/image1.jpg',
+      'assets/images/image1.jpg',
+      'assets/images/image1.jpg',
     ];
   }
 
